@@ -3,20 +3,29 @@ import os
 import pandas as pd
 
 
-# User select which file to load:
+# User selects which file to load:
 file_path = os.path.join(os.path.dirname(__file__), "data")
 f = os.listdir(file_path)
 
 file_names = pd.Series(f)
 file_name_data = pd.DataFrame(file_names, columns=['Files'])
-    
+# breakpoint()    
 print()
 print("Available Reports:")
 print("-----------------")
 print(file_name_data)
 print()
-load_file = int(input("Please select the file number from the list above to generate a report: "))
-selected_file = file_name_data.iloc[load_file, 0]
+
+# Validate user input:
+while True:
+    load_file = int(input("Please select the file number from the list above to generate a report: "))
+    if load_file in list(file_name_data.index.values):
+        selected_file = file_name_data.iloc[load_file, 0]
+        break
+    else:
+        print("Invalid file number!")
+
+
 
 # STARTER CODE
 
