@@ -41,8 +41,7 @@ monthly_sales = df['sales price'].sum()
 grouped_df = df.groupby('product').sum()
 grouped_df = grouped_df.iloc[:, 2:]
 grouped_df = grouped_df.sort_values(by='sales price', ascending=False)
-grouped_df = grouped_df.head(5)
-# breakpoint()
+top_grouped_df = grouped_df.head(5)
 
 # Create variable for automated date display
 x = f[load_file]
@@ -65,16 +64,12 @@ print("-----------------------")
 print("TOP SELLING PRODUCTS:")
 n = 1
 while n <=5:
-    print(f" {n: .0f}) ", grouped_df.index[n-1], f": ${grouped_df.iat[n-1, 0]: .2f}")
+    print(f" {n: .0f}) ", top_grouped_df.index[n-1], f": ${top_grouped_df.iat[n-1, 0]: .2f}")
     n = n+1
 
-# print("  1) Button-Down Shirt: $6,960.35")
-# print("  2) Super Soft Hoodie: $1,875.00")
-# print("  3) etc.")
-
+# Visualization block
 print("-----------------------")
 print("VISUALIZING THE DATA...")
-breakpoint()
 
 fig, ax = plt.subplots()
 
@@ -86,18 +81,16 @@ rect = ax.barh(y_pos, sales, align='center')
 ax.set_yticks(y_pos)
 ax.set_yticklabels(categories)
 ax.invert_yaxis()
-ax.set_xlabel('Sales')
-ax.set_title('Monthly Sales by Category')
+ax.set_xlabel('Sales (USD)', fontweight = 'bold')
+ax.set_ylabel('Category', fontweight = 'bold')
+ax.set_title('Monthly Sales by Category', fontweight = 'bold')
 
-# def autolabel(rects):
-#     for rec in rects:
-#         width = rec.get_width()
-#         ax.annotate(rec.get_x(),
-#             xy=(width, rec.get_x() + rec.get_width() / 2),
-#             xytext=(3, 0),
-#             textcoords="offset points",
-#             ha='center', va='bottom')
-
-# autolabel(rect)
+for i, v in enumerate(sales):
+    if v > 1000:
+        val = f"${v: .2f}"
+        ax.text(v - 600, i + .1, val, color = 'white', fontweight = 'bold')
+    else:
+        val = f"${v: .2f}"
+        ax.text(v + 3, i + .1, val, color = 'blue', fontweight = 'bold')
 
 plt.show()
