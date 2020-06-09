@@ -22,12 +22,15 @@ print()
 
 # Validate user input:
 while True:
-    load_file = int(input("Please select the file number from the list above to generate a report: "))
-    if load_file in list(file_name_data.index.values):
-        selected_file = file_name_data.iloc[load_file, 0]
-        break
-    else:
-        print("Invalid file number!")
+    try:
+        load_file = int(input("Please select the file number from the list above to generate a report: "))
+        if load_file in list(file_name_data.index.values):
+            selected_file = file_name_data.iloc[load_file, 0]
+            break
+        else:
+            print("Invalid file number!")
+    except ValueError:
+        print("Input was not a number. Please try again...")
 
 selected_file = os.path.join(os.path.dirname(__file__), "data", selected_file)
 
