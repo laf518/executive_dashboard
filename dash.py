@@ -1,8 +1,10 @@
 # dash.py
 import os
 import datetime
+import math
 import pandas as pd
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 
 # User selects which file to load:
@@ -29,8 +31,6 @@ while True:
 
 selected_file = os.path.join(os.path.dirname(__file__), "data", selected_file)
 
-# STARTER CODE
-
 # Create dataframe from selected .csv file
 data = pd.read_csv(selected_file)
 df = pd.DataFrame(data)
@@ -49,6 +49,7 @@ year = int(x[6:10])
 month = int(x[10:12])
 x  = datetime.datetime(year, month, 1)
 
+# Automated file display
 print("-----------------------")
 print("MONTH: ", x.strftime("%B"), x.strftime("%Y"))
 
@@ -57,40 +58,44 @@ print("CRUNCHING THE DATA...")
 
 # Monthly sales block
 print("-----------------------")
-print(f"TOTAL MONTHLY SALES: ${monthly_sales: .2f}")
+print(f"TOTAL MONTHLY SALES: ${monthly_sales:,.2f}")
 
 # Monthly top-sales block
 print("-----------------------")
 print("TOP SELLING PRODUCTS:")
 n = 1
 while n <=5:
-    print(f" {n: .0f}) ", top_grouped_df.index[n-1], f": ${top_grouped_df.iat[n-1, 0]: .2f}")
+    print(f" {n:.0f}) ", top_grouped_df.index[n-1], f": ${top_grouped_df.iat[n-1, 0]:,.2f}")
     n = n+1
 
 # Visualization block
 print("-----------------------")
 print("VISUALIZING THE DATA...")
 
+# Horizontal Bar Graph Set Up:
 fig, ax = plt.subplots()
 
 categories = list(grouped_df.index)
-y_pos = np.arange(len(categories))
 sales = list(round(grouped_df['sales price'], 2))
+y_pos = np.arange(len(categories))
+x_lab = [f"${x:,.2f}" for x in range(0, (round(math.ceil(sales[0] / 1000)) * 1000) + 1000, 1000)]
 
-rect = ax.barh(y_pos, sales, align='center')
+ax.barh(y_pos, sales, align='center')
 ax.set_yticks(y_pos)
 ax.set_yticklabels(categories)
+ax.set_xticklabels(x_lab)
 ax.invert_yaxis()
 ax.set_xlabel('Sales (USD)', fontweight = 'bold')
 ax.set_ylabel('Category', fontweight = 'bold')
 ax.set_title('Monthly Sales by Category', fontweight = 'bold')
 
+# Label each bar with exact sales figure:
 for i, v in enumerate(sales):
     if v > 1000:
-        val = f"${v: .2f}"
+        val = f"${v:,.2f}"
         ax.text(v - 600, i + .1, val, color = 'white', fontweight = 'bold')
     else:
-        val = f"${v: .2f}"
+        val = f"${v:,.2f}"
         ax.text(v + 3, i + .1, val, color = 'blue', fontweight = 'bold')
 
 plt.show()
