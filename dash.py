@@ -1,5 +1,6 @@
 # dash.py
 import os
+import datetime
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -43,9 +44,14 @@ grouped_df = grouped_df.sort_values(by='sales price', ascending=False)
 grouped_df = grouped_df.head(5)
 # breakpoint()
 
+# Create variable for automated date display
+x = f[load_file]
+year = int(x[6:10])
+month = int(x[10:12])
+x  = datetime.datetime(year, month, 1)
 
 print("-----------------------")
-print("MONTH: March 2018")
+print("MONTH: ", x.strftime("%B"), x.strftime("%Y"))
 
 print("-----------------------")
 print("CRUNCHING THE DATA...")
@@ -68,6 +74,7 @@ while n <=5:
 
 print("-----------------------")
 print("VISUALIZING THE DATA...")
+breakpoint()
 
 fig, ax = plt.subplots()
 
@@ -75,11 +82,22 @@ categories = list(grouped_df.index)
 y_pos = np.arange(len(categories))
 sales = list(round(grouped_df['sales price'], 2))
 
-ax.barh(y_pos, sales, align='center')
+rect = ax.barh(y_pos, sales, align='center')
 ax.set_yticks(y_pos)
 ax.set_yticklabels(categories)
 ax.invert_yaxis()
 ax.set_xlabel('Sales')
 ax.set_title('Monthly Sales by Category')
+
+# def autolabel(rects):
+#     for rec in rects:
+#         width = rec.get_width()
+#         ax.annotate(rec.get_x(),
+#             xy=(width, rec.get_x() + rec.get_width() / 2),
+#             xytext=(3, 0),
+#             textcoords="offset points",
+#             ha='center', va='bottom')
+
+# autolabel(rect)
 
 plt.show()
