@@ -91,6 +91,8 @@ ax.invert_yaxis()
 ax.set_xlabel('Sales (USD)', fontweight = 'bold')
 ax.set_ylabel('Category', fontweight = 'bold')
 ax.set_title('Monthly Sales by Category', fontweight = 'bold')
+# CREDIT: https://matplotlib.org/3.1.1/gallery/lines_bars_and_markers/barchart.html
+# CREDIT: https://matplotlib.org/3.1.1/gallery/lines_bars_and_markers/barh.html
 
 # Label each bar with exact sales figure:
 for i, v in enumerate(sales):
@@ -100,5 +102,5 @@ for i, v in enumerate(sales):
     else:
         val = f"${v:,.2f}"
         ax.text(v + 3, i + .1, val, color = 'blue', fontweight = 'bold')
-
+# CREDIT: https://stackoverflow.com/questions/30228069/how-to-display-the-value-of-the-bar-on-each-bar-with-pyplot-barh
 plt.show()
